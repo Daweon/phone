@@ -1,0 +1,184 @@
+#include <iostream>
+#include <math.h>
+#include <fstream>
+#include <time.h>
+#include <windows.h>
+
+using namespace std;
+
+int partition(int tablica[], int p, int r)
+{
+int x = tablica[p];
+int i = p, j = r, w;
+  while (true)
+  {
+  while (tablica[j] > x)
+  j--;
+  while (tablica[i] < x)
+  i++;
+    if (i < j)
+    {
+    w = tablica[i];
+    tablica[i] = tablica[j];
+    tablica[j] = w;
+    i++;
+    j--;
+    }
+    else //
+    return j;
+  }
+}
+
+void quicksort(int tablica[], int p, int r)
+int q;
+  if (p < r)
+  {
+  q = partition(tablica,p,r);
+  quicksort(tablica, p, q);
+  quicksort(tablica, q+1, r);
+  }
+}
+
+
+void next(int *c_o_n,int *e_o_s, int s, int index, int n_o_e, int v_o_s, fstream &outputfile)
+{
+int n=index-1;
+    for (int i=n; i>=0; i--)
+    {
+      if ((s+tablica1[i])==v_o_s) 
+      {
+      solutions++;                    // increasing number of solutions
+      n_o_e++;                        // increasing number of elements of solution
+      e_o_s[n_o_e]=c_o_n[i];    // adding number as element of solution
+        for (int n=0; n<=n_o_e; n++)
+        {
+        cout << tablica2[n] << " ";        // typing all numbers of solution
+        outputfile << tablica2[n] << " ";  // writing all numbers of solution
+        }
+      n_o_e--;
+      cout << endl;
+      outputfile << endl;
+      }
+      else if ((s+tablica1[i])<v_o_s)  
+      {
+      n_o_e++;                        // adding new element of solution
+      tablica2[n_o_e]=tablica1[i];    // adding number as element of solution
+      s=s+tablica1[i];                // sum of all current elements
+      next(tablica1, tablica2, s, i, n_o_e, v_o_s, outputfile);    // new iteration of finding new element of solution
+      s=s-tablica1[i];
+      n_o_e--;
+      }
+      else if ((s+tablica1[i])>v_o_s)
+      {
+      }
+    }
+}
+
+
+int main()
+{
+int choice;
+int number=0, hm, b_range, e_range;
+int *collection_of_numbers;
+
+  while (true)
+  {
+  cout << "What do you want to do?:" << endl 
+  << "1. Generate an array." << endl 
+  << "2. Create an array." << endl 
+  << "3. Find elements of specific sum." << endl 
+  << "4. Exit";
+  cout << endl;
+  cin >> choice;
+
+    
+  switch (choice){
+    case 1:
+    {
+    cout << "How many numbers do you want?: ";
+    cin >> hm;
+      
+      do 
+      {
+      cout << "What is the beginning of the range?: ";
+      cin >> b_range;
+      cout << "What is the end of the range?: ";
+      cin >> e_range;
+        if (e_range-b_range<=0) 
+        {
+        cout << "Your range is zero or negative" << endl;
+        }
+      } while (e_range-b_range<=0);
+    
+    int range = e_range-b_range;
+    collection_of_numbers = new int [hm];
+    srand(time(NULL));
+    for (int i=0; i<hm; i++){
+    collection_of_numbers[i] = b_range + rand()%(range+1);
+    }
+    }
+    break;
+    
+    case 2:
+    {
+    cout << "How many numbers you want?: ";
+    cin >> hm;
+    collection_of_numbers = new int [hm];
+      for (int i=0; i<=hm; i++)
+      {
+      cout << "Give your " << i << " number: " << endl;
+      cin >> collection_of_numbers[i];
+      }
+    }
+    break;
+    
+    case 3:
+    {
+    // ------------------------------------
+    // Sorting array of numbers
+      if(collection_of_numbers == nullptr) 
+      {
+      cout << "Array is empty";
+      break;
+      }
+    quicksort(collection_of_numbers,0,hm-1);
+    
+      for (int i=0; i<hm; i++) 
+      {
+      cout << collection_of_numbers[i] << " ";
+      }
+      cout << endl;
+    
+    // Chosing value of sum
+    int numbers_under=0, sum=0, a=-1, value_of_sum;
+    cout << "What value of which sum do you want to get?" << endl;
+    cin >> value_of_sum;
+      while (collection_of_numbers[numbers_under]<value_of_sum) 
+      {
+      numbers_under++;
+      cout << collection_of_numbers[numbers_under] << endl;
+      }
+    int sub[numbers_under];
+    int solutions[numbers_under];
+
+    for (int i=0; i<=numbers_under; i++){
+    sub[i]=collection_of_numbers[i];}
+
+    fstream outputfile;
+    outputfile.open("solutions.txt",ios::out);
+
+    next(sub, solutions, sum, numbers_under, a, value_of_sum, outputfile);
+
+    outputfile.close();}
+
+    break;
+    case 4:
+    {
+    exit(0);
+    }
+break;
+}
+}
+delete collection_of_numbers;
+return 0;
+}
