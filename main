@@ -38,7 +38,7 @@ void quicksort(int tablica[], int p, int r){
 }
 
 void counting_solutions_without_repetitions(int *s_o_n,vector <int> solutions, int sum, int index, int n_o_e, int v_o_s, fstream &outputfile,  int &n_o_s){
-    index--;                                
+    index--;
         for (int i=index; i>=0; i--){
             if ((sum+s_o_n[i])==v_o_s){
                 n_o_s++;                    // increasing number of solutions
@@ -55,8 +55,8 @@ void counting_solutions_without_repetitions(int *s_o_n,vector <int> solutions, i
                 solutions.push_back(s_o_n[i]);                        // adding new element of solution
                 sum=sum+s_o_n[i];                // sum of all current elements in solution
                 counting_solutions_without_repetitions(s_o_n, solutions, sum, i, n_o_e, v_o_s, outputfile, n_o_s);    // new iteration of finding new element of solution
-                sum=sum-s_o_n[i];                
-                solutions.pop_back();            
+                sum=sum-s_o_n[i];
+                solutions.pop_back();
             }
             else;
         }
@@ -86,13 +86,15 @@ void counting_solutions_with_repetitions(int *s_o_n,vector <int> solutions, int 
         }
 }
 
+
+
 int main()
 {
     // Generating array of numbers
     std::vector <int> solutions;
     int choice;
-    int number=0, collection_size=0, b_range, e_range;
-    int *collection_of_numbers;
+    int number=0, set_size=0, b_range, e_range;
+    int *set_of_numbers;
     int number_of_solution;
     int *ptr_number_of_solution = &number_of_solution;
 
@@ -112,97 +114,100 @@ int main()
 
         switch (choice){
             case 1:{
+                // Generating an array with random numbers
                 do{
                     do{
                     cout << "How many numbers do you want?: ";
-                    cin >> collection_size;
+                    cin >> set_size;
 
                     cout << "What is the beginning of the range?: ";
                     cin >> b_range;
                     cout << "What is the end of the range?: ";
                     cin >> e_range;
-                    if (collection_size<1 || b_range<0 || e_range<0){
+                    if (set_size<1 || b_range<0 || e_range<0){
                             cout << "Collection size, beginning of the range and end of the range must be positive numbers." << endl;
                         }
-                    }while (collection_size<1 || b_range<0 || e_range<0);
+                    }while (set_size<1 || b_range<0 || e_range<0);
                     if (e_range-b_range<=0){
                         cout << "Range cannot be zero nor negative." << endl;
                     }
                 }while (e_range-b_range<=0);
                 int range = e_range-b_range;
-                collection_of_numbers = new int [collection_size];
+                set_of_numbers = new int [set_size];
                 srand(time(NULL));
-                for (int i=0; i<collection_size; i++){
-                    collection_of_numbers[i] = b_range + rand()%(range+1);
+                for (int i=0; i<set_size; i++){
+                    set_of_numbers[i] = b_range + rand()%(range+1);
                 }
             }
             break;
             case 2:{
-
+                // Generating an array with specific numbers given by user
 
 
                 do {
                     cout << "How many numbers do you want?: ";
-                    cin >> collection_size;
-                    if (collection_size<=0){
-                        cout << "Size of collection must be a positive number." << endl;
+                    cin >> set_size;
+                    if (set_size<=0){
+                        cout << "Size of set must be a positive number." << endl;
                     }
-                }while (collection_size<=0 );
+                }while (set_size<=0 );
 
-                collection_of_numbers = new int [collection_size];
-                for (int i=0; i<collection_size; i++){
+                set_of_numbers = new int [set_size];
+                for (int i=0; i<set_size; i++){
                     cout << "Give your " << i+1 << " number: " << endl;
-                    cin >> collection_of_numbers[i];
-                    if (collection_of_numbers[i]<=1){
-                            cout << "Every number of collection must be positive." << endl;
+                    cin >> set_of_numbers[i];
+                    if (set_of_numbers[i]<=1){
+                            cout << "Every number of set must be positive." << endl;
                             i--;
                         }
                 }
             }
             break;
             case 3:{
-                if(collection_of_numbers == nullptr || collection_size == 0){
+                // Showing an array
+                if(set_of_numbers == nullptr || set_size == 0){
                     cout << "Array is empty." << endl;
                     break;}
-                quicksort(collection_of_numbers,0,collection_size-1);
-                for (int i=0; i<collection_size; i++){
-                    cout << collection_of_numbers[i] << " ";
+                quicksort(set_of_numbers,0,set_size-1);
+                for (int i=0; i<set_size; i++){
+                    cout << set_of_numbers[i] << " ";
                 }
                 cout <<endl;
             }
             break;
             case 4:{
-                
-                // Checking whether array is empty 
-                if(collection_of_numbers == nullptr || collection_size == 0){
+                //Counting all solutions
+
+                // Checking whether array is empty
+                if(set_of_numbers == nullptr || set_size == 0){
                     cout << "Array is empty." << endl;
                     cout << endl;
                     break;
                 }
-                
+
                 // Sorting array of numbers
-                quicksort(collection_of_numbers,0,collection_size-1);
-                
+                quicksort(set_of_numbers,0,set_size-1);
+
                 // Chosing value of sum
                 int numbers_under=0, sum=0, a=0, value_of_sum;
                 cout << "What value of which sum do you want to get?" << endl;
                 cin >> value_of_sum;
                 // Reduction set of numbers to numbers below value of sum
                 cout << endl << "All numbers below wanted sum:" << endl;
-                while(collection_of_numbers[numbers_under]<=value_of_sum){
-                    cout << collection_of_numbers[numbers_under] << endl;
+                while(set_of_numbers[numbers_under]<=value_of_sum){
+                    cout << set_of_numbers[numbers_under] << endl;
                     numbers_under++;
-                    if (numbers_under>=collection_size){
+                    if (numbers_under>=set_size){
                         break;
                     }
                 }
 
-                int sub[numbers_under]; 
+                int sub[numbers_under];
                 *ptr_number_of_solution = 0;
 
 
                 for (int i=0; i<=numbers_under; i++){
-                    sub[i]=collection_of_numbers[i];
+                    sub[i]=set_of_numbers[i];
                 }
                 int choice2;
                 cout << "Do you want solutions with repetitions?" << endl
@@ -252,7 +257,7 @@ int main()
             }
         }
     }
-    delete collection_of_numbers;
+    delete set_of_numbers;
     return 0;
 
 }
