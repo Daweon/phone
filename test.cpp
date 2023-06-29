@@ -89,8 +89,7 @@ s20->attach(&one);
 i10->rbs->attachPhone(i10);
 s20->rbs->attachPhone(s20);
 i10->sendSMS("testowa wiadomosc", 445684321);
-std::cout << std::endl;
-s20->receiveSMS(445684321);
+i10->receiveSMS(445684321);
 delete i10;
 delete s20;
 
