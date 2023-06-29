@@ -5,7 +5,6 @@
 #include "RadioBaseStation.h"
 #include "RadioBaseStationImpl.h"
 
-
 class Iphone : public Phone {
 public:
 virtual void call(){
@@ -15,8 +14,15 @@ Iphone(unsigned int phoneNumber): Phone {phoneNumber}{}
 virtual void sendSMS(const std::string& msg, unsigned int pNumber){
     rbs->notifyUser(msg, pNumber);
 }
-virtual void receiveSMS(unsigned int pNumber){
-    rbs->showmessage(pNumber);
+virtual void receiveSMS(const std::string& msg, unsigned int pNumber){
+    std::cout << msg << std::endl;
+}
+virtual void attach(RadioBaseStation* RBS){
+    rbs = RBS;
+    rbs->attachPhone(this);
+}
+virtual void detach(RadioBaseStation* rbs){
+    rbs = nullptr;
 }
 };
 
@@ -29,8 +35,15 @@ Samsung(unsigned int phoneNumber): Phone {phoneNumber}{}
 virtual void sendSMS(const std::string& msg, unsigned int pNumber){
     rbs->notifyUser(msg, pNumber);
 }
-virtual void receiveSMS(unsigned int pNumber){
-    rbs->showmessage(pNumber);
+virtual void receiveSMS(const std::string& msg, unsigned int pNumber){
+    std::cout << msg << std::endl;
+}
+virtual void attach(RadioBaseStation* RBS){
+    rbs = RBS;
+    rbs->attachPhone(this);
+}
+virtual void detach(RadioBaseStation* rbs){
+    rbs = nullptr;
 }
 };
 
@@ -86,10 +99,8 @@ std::cout << std::endl;
 i10->call();
 i10->attach(&one);
 s20->attach(&one);
-i10->rbs->attachPhone(i10);
-s20->rbs->attachPhone(s20);
+std::cout << std::endl;
 i10->sendSMS("testowa wiadomosc", 445684321);
-i10->receiveSMS(445684321);
 delete i10;
 delete s20;
 

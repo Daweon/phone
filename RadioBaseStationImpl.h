@@ -13,12 +13,13 @@ std::unordered_map<phone_number, Phone*> attachedPhones;
 std::unordered_map<phone_number, std::string> messages;
 virtual void notifyUser(const std::string& msg, unsigned int pNumber){
     messages [pNumber] = msg;
-}
-virtual void showmessage(unsigned int pNumber){
-    std::cout << messages [pNumber];
+    attachedPhones[pNumber]->receiveSMS(msg, pNumber);
 }
 virtual void attachPhone(Phone* phone){
     attachedPhones [phone->phoneNumber] = phone;
+}
+virtual void showmessage(unsigned int pNumber){
+    std::cout << messages [pNumber];
 }
 ~RadioBaseStationImpl()=default;
 RadioBaseStationImpl()=default;
