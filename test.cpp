@@ -99,6 +99,7 @@ std::cout << std::endl;
 i10->call();
 i10->attach(&one);
 s20->attach(&one);
+
 std::cout << std::endl;
 i10->sendSMS("testowa wiadomosc", 445684321);
 delete i10;
